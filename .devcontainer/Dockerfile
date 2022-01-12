@@ -19,17 +19,15 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && usermod -aG www-data ${USERNAME}
 
 # Apache settings
-# RUN sed -i -e "s/Listen 80/Listen 8000/g" /etc/apache2/ports.conf
-# RUN sed -i -e "s/*:80/*:8000/g" /etc/apache2/sites-enabled/000-default.conf
+RUN bash /tmp/library-scripts/capache.sh "${VARIANT}"
 
 RUN apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
 # Install xdebug
 RUN yes | pecl install xdebug \
     && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.mode = debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    && echo "xdebug.mode = develop,debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.start_with_request = yes" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.client_port = 9000" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && rm -rf /tmp/pear
 
 # Install composer
