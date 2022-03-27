@@ -19,7 +19,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && usermod -aG www-data ${USERNAME}
 
 # Apache settings
-RUN bash /tmp/library-scripts/capache.sh "${VARIANT}"
+RUN bash /tmp/library-scripts/apache.sh "${VARIANT}"
 
 RUN apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
